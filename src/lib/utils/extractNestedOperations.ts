@@ -40,6 +40,7 @@ export const fieldsByWriteOperation: Record<
   updateMany: ["data"],
   connect: [],
   disconnect: [],
+  set: [],
   delete: [],
   deleteMany: [],
 };
