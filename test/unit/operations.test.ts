@@ -2070,6 +2070,81 @@ describe("operations", () => {
         })
       );
     });
+
+    it("can modify nested connect action to be a set", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "connect") {
+            return params.query(params.args, "set");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            connect: {
+              id: faker.datatype.number(),
+            },
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          set: params.args.data.posts.connect,
+        })
+      );
+    });
+  });
+
+  describe("disconnect", () => {
+    it("can modify nested disconnect action to be a set", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "disconnect") {
+            return params.query(params.args, "set");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            disconnect: [
+              { id: faker.datatype.number() },
+              { id: faker.datatype.number() },
+            ],
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          set: params.args.data.posts.disconnect,
+        })
+      );
+    });
   });
 
   describe("connectOrCreate", () => {
@@ -2345,6 +2420,245 @@ describe("operations", () => {
       expect(query).toHaveBeenCalledWith(
         set(params.args, "data.posts", {
           connect: params.args.data.posts.connectOrCreate.where,
+        })
+      );
+    });
+
+    it("can modify nested connectOrCreate action to be a set", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "connectOrCreate") {
+            return params.query(params.args.where, "set");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            connectOrCreate: {
+              where: { id: faker.datatype.number() },
+              create: {
+                id: faker.datatype.number(),
+                title: faker.lorem.sentence(),
+              },
+            },
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          set: params.args.data.posts.connectOrCreate.where,
+        })
+      );
+    });
+  });
+
+  describe("set", () => {
+    it("can modify nested set action to be a connect", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "set") {
+            return params.query(params.args, "connect");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            set: [
+              { id: faker.datatype.number() },
+              { id: faker.datatype.number() },
+            ],
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          connect: params.args.data.posts.set,
+        })
+      );
+    });
+
+    it("can modify nested set action to be a disconnect", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "set") {
+            return params.query(params.args, "disconnect");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            set: [
+              { id: faker.datatype.number() },
+              { id: faker.datatype.number() },
+            ],
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          disconnect: params.args.data.posts.set,
+        })
+      );
+    });
+
+    it("can modify nested set action to be a create", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "set") {
+            return params.query(params.args, "create");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            set: [
+              { id: faker.datatype.number(), title: faker.lorem.sentence() },
+              { id: faker.datatype.number(), title: faker.lorem.sentence() },
+            ],
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          create: params.args.data.posts.set,
+        })
+      );
+    });
+
+    it("can modify nested set action to be a connectOrCreate", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "set") {
+            return params.query({
+              create: params.args,
+              where: params.args
+            }, "connectOrCreate");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            set: [
+              { id: faker.datatype.number() },
+              { id: faker.datatype.number() },
+            ],
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          connectOrCreate: [
+            {
+              where: params.args.data.posts.set[0],
+              create: params.args.data.posts.set[0],
+            },
+            {
+              where: params.args.data.posts.set[1],
+              create: params.args.data.posts.set[1],
+            },
+          ],
+        })
+      );
+    });
+
+    it("can modify nested set action to be a delete", async () => {
+      const allOperations = withNestedOperations({
+        $rootOperation: (params) => {
+          return params.query(params.args);
+        },
+        $allNestedOperations: (params) => {
+          if (params.operation === "set") {
+            return params.query(params.args, "delete");
+          }
+          return params.query(params.args);
+        },
+      });
+
+      const query = jest.fn((_: any) => Promise.resolve(null));
+
+      const params = createParams(query, "User", "update", {
+        where: { id: faker.datatype.number() },
+        data: {
+          email: faker.internet.email(),
+          posts: {
+            set: [
+              { id: faker.datatype.number() },
+              { id: faker.datatype.number() },
+            ],
+          },
+        },
+      });
+
+      await allOperations(params);
+
+      expect(query).toHaveBeenCalledWith(
+        set(params.args, "data.posts", {
+          delete: params.args.data.posts.set,
         })
       );
     });
