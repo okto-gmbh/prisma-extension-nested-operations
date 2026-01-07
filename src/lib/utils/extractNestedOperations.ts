@@ -88,7 +88,7 @@ export function extractRelationLogicalWhereOperations<
 
     relations.forEach((relation) => {
       const model = relation.type as Prisma.ModelName;
-      const oppositeRelation = findOppositeRelation(relation);
+      const oppositeRelation = findOppositeRelation(params.model, relation);
 
       if (Array.isArray(logicalArg)) {
         logicalArg.forEach((where, index) => {
@@ -235,7 +235,7 @@ export function extractRelationWhereOperations<
 
   relations.forEach((relation) => {
     const model = relation.type as Prisma.ModelName;
-    const oppositeRelation = findOppositeRelation(relation);
+    const oppositeRelation = findOppositeRelation(params.model,relation);
 
     const baseArgPath = params.scope ? ["args"] : ["args", "where"];
     const arg = get(params, [...baseArgPath, relation.name]);
@@ -309,7 +309,7 @@ export function extractRelationWriteOperations<
 
   relations.forEach((relation) => {
     const model = relation.type as Prisma.ModelName;
-    const oppositeRelation = findOppositeRelation(relation);
+    const oppositeRelation = findOppositeRelation(params.model,relation);
 
     fields.forEach((field) => {
       const argPath = ["args", field, relation.name].filter(
@@ -395,7 +395,7 @@ export function extractRelationReadOperations<
 
   relations.forEach((relation) => {
     const model = relation.type as Prisma.ModelName;
-    const oppositeRelation = findOppositeRelation(relation);
+    const oppositeRelation = findOppositeRelation(params.model,relation);
 
     readOperations.forEach((operation) => {
       const arg = get(params, ["args", operation, relation.name]);
