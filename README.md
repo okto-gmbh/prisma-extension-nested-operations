@@ -113,7 +113,7 @@ returned result, it is the result of the query updated by the returned results f
 The params object passed to the `$allNestedOperations()` function is similar to the params passed to `$allOperations()`.
 It has `args`, `model`, `operation`, and `query` fields, however there are some key differences:
 
-- the `operation` field adds the following options: 'connectOrCreate', 'connect', 'disconnect', 'include', 'select' and 'where'
+- the `operation` field adds the following options: 'connectOrCreate', 'connect', 'disconnect', 'set', 'include', 'select' and 'where'
 - the `query` field takes a second argument, which is the `operation` being performed. This is useful where the type of the nested operation should be changed.
 - there is an additional `scope` field that contains information specific to nested relations:
 
@@ -159,6 +159,7 @@ type Operation =
   | "where"
   | "include"
   | "select"
+  | "set"
   | "connect"
   | "connectOrCreate"
   | "disconnect";

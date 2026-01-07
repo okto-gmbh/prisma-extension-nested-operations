@@ -14,6 +14,7 @@ export type NestedWriteOperation =
   | "connectOrCreate"
   | "connect"
   | "disconnect"
+  | "set"
   | "createMany"
   | "updateMany"
   | "delete"

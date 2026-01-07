@@ -17,6 +17,7 @@ export const writeOperations: NestedWriteOperation[] = [
   "delete",
   "deleteMany",
   "disconnect",
+  "set",
   "connect",
   "connectOrCreate",
 ];
