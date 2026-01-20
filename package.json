@@ -1,6 +1,6 @@
 {
   "name": "@okto-gmbh/prisma-extension-nested-operations",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Utils for creating Prisma client extensions with nested operations",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
